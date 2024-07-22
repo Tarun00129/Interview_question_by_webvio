@@ -1,70 +1,177 @@
-# Getting Started with Create React App
+Here's a README template for your MERN stack project. Feel free to modify any sections as needed.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+---
 
-## Available Scripts
+# MERN Stack Form Project
 
-In the project directory, you can run:
+## Project Overview
 
-### `npm start`
+This project is a MERN stack application that allows users to fill out and manage forms with multiple entries. The form includes fields for room details and supports dynamic addition and removal of forms. The data is submitted to a MariaDB database using a Node.js and Express backend, with form handling and validation managed by Formik and Yup. Redux and Axios are used for state management and data fetching, and Bootstrap provides styling.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Features
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **Dynamic Form Handling**: Users can add and remove forms dynamically.
+- **Form Fields**:
+  - `room_type` (Select)
+  - `no_of_rooms` (Text Field)
+  - `check_in_date` (Date Picker)
+  - `check_out_date` (Date Picker)
+  - `number_of_days` (Text Field)
+  - `payable_amount` (Text Field)
+- **Data Submission**: Form data is sent to a MariaDB database via a POST API.
+- **Data Fetching**: Data is retrieved from the database via a GET API and displayed on a Dashboard component.
 
-### `npm test`
+## Technologies Used
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **Frontend**: React.js, Formik, Yup, Redux, Axios, Bootstrap
+- **Backend**: Node.js, Express
+- **Database**: MariaDB
 
-### `npm run build`
+## Setup Instructions
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Prerequisites
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Node.js
+- MariaDB
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Backend Setup
 
-### `npm run eject`
+1. **Clone the repository**:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+    ```sh
+    git clone https://github.com/your-username/mern-formik-project.git
+    cd mern-formik-project/backend
+    ```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+2. **Install dependencies**:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+    ```sh
+    npm install
+    ```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+3. **Configure MariaDB**:
+   - Update the `backend/db.js` file with your MariaDB connection details.
 
-## Learn More
+    **`backend/db.js`**
+    ```js
+    const mariadb = require('mariadb');
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+    const pool = mariadb.createPool({
+        host: 'localhost',
+        user: 'your-username',
+        password: 'your-password',
+        database: 'your-database-name',
+        connectionLimit: 5
+    });
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+    module.exports = pool;
+    ```
 
-### Code Splitting
+4. **Run the backend server**:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+    ```sh
+    node server.js
+    ```
 
-### Analyzing the Bundle Size
+### Frontend Setup
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+1. **Navigate to the frontend directory**:
 
-### Making a Progressive Web App
+    ```sh
+    cd ../frontend
+    ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+2. **Install dependencies**:
 
-### Advanced Configuration
+    ```sh
+    npm install
+    ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+3. **Run the React app**:
 
-### Deployment
+    ```sh
+    npm start
+    ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### Proxy Configuration
 
-### `npm run build` fails to minify
+Ensure that the `proxy` field in `frontend/package.json` points to the backend server:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+**`frontend/package.json`**
+```json
+{
+  "name": "mern-formik-project",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    // other dependencies
+  },
+  "proxy": "http://localhost:5000",
+  "scripts": {
+    "start": "react-scripts start",
+    // other scripts
+  }
+}
+```
+
+## API Endpoints
+
+- **POST /api/rooms**: Submit form data to the database.
+  - **Request Body**:
+    ```json
+    {
+      "room_type": "single",
+      "no_of_rooms": 1,
+      "check_in_date": "2023-01-01",
+      "check_out_date": "2023-01-02",
+      "number_of_days": 1,
+      "payable_amount": 100.00
+    }
+    ```
+  - **Response**:
+    ```json
+    {
+      "id": 1,
+      "room_type": "single",
+      "no_of_rooms": 1,
+      "check_in_date": "2023-01-01",
+      "check_out_date": "2023-01-02",
+      "number_of_days": 1,
+      "payable_amount": 100.00
+    }
+    ```
+
+- **GET /api/rooms**: Retrieve all room entries from the database.
+  - **Response**:
+    ```json
+    [
+      {
+        "id": 1,
+        "room_type": "single",
+        "no_of_rooms": 1,
+        "check_in_date": "2023-01-01",
+        "check_out_date": "2023-01-02",
+        "number_of_days": 1,
+        "payable_amount": 100.00
+      }
+    ]
+    ```
+
+## Usage
+
+1. Open your browser and navigate to `http://localhost:3000` to access the application.
+2. Fill out the form fields and use the plus (+) and minus (-) buttons to dynamically add or remove forms.
+3. Click "Submit" to send the form data to the backend.
+4. View the submitted data on the Dashboard component.
+
+## Contributing
+
+Feel free to submit issues, forks, and pull requests. If you have suggestions or improvements, please create an issue or a pull request.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+---
+
+Feel free to customize this README to better fit your project's specific details or additional features.
