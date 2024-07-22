@@ -108,6 +108,7 @@ app.get('/api/rooms', async (req, res) => {
         res.status(200).send(rooms);
     } catch (error) {
         res.status(400).send(error);
+        
     }
 });
 

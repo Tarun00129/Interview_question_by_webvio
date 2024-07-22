@@ -9,3 +9,4 @@ export const fetchRooms = () => async (dispatch) => {
         console.error('Error fetching rooms:', error);
     }
 };
+
